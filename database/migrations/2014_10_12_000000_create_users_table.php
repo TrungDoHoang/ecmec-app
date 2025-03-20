@@ -18,13 +18,9 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone', 12)->nullable()->comment('Phone number');
-            $table->unsignedBigInteger('img_id')->nullable()->comment('Image ID');
-            $table->boolean('isDelete')->nullable()->default(false)->comment('0: not delete, 1: delete');
+            $table->boolean('is_delete')->nullable()->default(false)->comment('0: not delete, 1: delete');
             $table->rememberToken();
             $table->timestamps();
-
-            // Foreign key
-            $table->foreign('img_id')->references('id')->on('images')->onDelete('set null');
         });
     }
 
