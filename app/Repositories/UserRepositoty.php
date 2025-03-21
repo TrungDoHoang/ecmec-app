@@ -2,32 +2,32 @@
 
 namespace App\Repositories;
 
-use App\Contracts\UserRepositoryInterface;
 use App\Models\User;
 
-class UserRepository implements UserRepositoryInterface
+// Repository class nhận dữ liệu từ service, thao tác với db(viết query) và trả về cho service
+class UserRepository
 {
-    public function all()
+    public function allUser()
     {
         return User::all();
     }
 
-    public function find($id)
+    public function findUser($id)
     {
         return User::find($id);
     }
 
-    public function create(array $data)
+    public function createUser(array $data)
     {
         return User::create($data);
     }
 
-    public function update($id, array $data)
+    public function updateUser($id, array $data)
     {
         return User::find($id)->update($data);
     }
 
-    public function delete($id)
+    public function deleteUser($id)
     {
         return User::destroy($id);
     }
