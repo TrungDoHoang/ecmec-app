@@ -4,15 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Introductions extends Model
+class Service extends Model
 {
     use HasFactory;
 
-    // Nếu tên bảng khác với quy ước (plural hóa tên model)
-    // protected $table = 'products';
-
-    protected $fillable = ['title_vn', 'title_en', 'address_en', 'address_vn', 'description_vn', 'description_en', 'salary', 'is_show', 'priority', 'is_delete', 'created_by', 'updated_by'];
+    protected $fillable = ['title_vn', 'title_en', 'description_vn', 'description_en', 'is_show', 'priority', 'is_delete', 'created_by', 'updated_by'];
 
     // Quan hệ với các bảng khác
     public function userCreated()
@@ -23,5 +21,10 @@ class Introductions extends Model
     public function userUpdated()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function projects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'project_service', 'service_id', 'project_id');
     }
 }

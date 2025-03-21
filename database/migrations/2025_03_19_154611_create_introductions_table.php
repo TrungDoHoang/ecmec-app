@@ -24,10 +24,12 @@ return new class extends Migration
             $table->integer('priority')->nullable()->default(0)->comment('0: normal, 1: high');
             $table->boolean('is_delete')->nullable()->default(false)->comment('0: not delete, 1: delete');
             $table->unsignedBigInteger('created_by')->nullable()->comment('User ID created');
+            $table->unsignedBigInteger('updated_by')->nullable()->comment('User ID updated');
             $table->timestamps();
 
             // Foreign key
             $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null');
         });
     }
 
