@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::middleware(['auth:sanctum'])->group(function () {
     // Lấy danh sách người dùng
     Route::get('users', [UserController::class, 'index']);
@@ -29,3 +30,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Thay đổi mật khẩu
     Route::post('users/change-password/{id}', [UserController::class, 'changePassword']);
 });
+
+// Đăng nhập
+Route::post('login', [UserController::class, 'login']);

@@ -13,4 +13,8 @@ interface UserServiceInterface
     public function updateUser($id, array $data);
 
     public function deleteUser($id);
+
+    public function authenticate(array $data);
+
+    public function changePassword($id, array $data);
 }

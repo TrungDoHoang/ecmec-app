@@ -25,7 +25,9 @@ class HomeContentSeeder extends Seeder
                 'created_by' => 1,
                 'updated_by' => 1,
                 'is_delete' => 0,
-                'img_id' => 1
+                'img_id' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
     }
