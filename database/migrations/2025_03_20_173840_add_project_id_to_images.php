@@ -12,7 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('images', function (Blueprint $table) {
-            $table->string('project_id')->nullable();
+            // Xóa cột project_id nếu nó đã tồn tại
+            if (Schema::hasColumn('images', 'project_id')) {
+                $table->dropForeign(['project_id']);
+                $table->dropColumn('project_id');
+            }
+
+            $table->unsignedBigInteger('project_id')->nullable();
 
             // Foreign key
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
