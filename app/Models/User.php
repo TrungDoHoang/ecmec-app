@@ -23,7 +23,7 @@ class User extends Authenticatable
         'password',
         'phone',
         'img_id',
-        'isDelete',
+        'is_delete',
     ];
 
     /**
