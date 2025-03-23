@@ -31,4 +31,22 @@ class UserRepository
     {
         return User::destroy($id);
     }
+
+    // Thu hồi token hiện tại của user
+    public function revokeToken($user)
+    {
+        // Lấy token hiện tại
+        $token = $user->token();
+
+        // Kiểm tra nếu token tồn tại thì xóa
+        if ($token) {
+            $token->delete();
+        }
+    }
+
+    // Thu hồi tất cả các token của user
+    public function revokeAllTokens($user)
+    {
+        $user->tokens()->delete();
+    }
 }

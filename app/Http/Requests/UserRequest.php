@@ -26,7 +26,7 @@ class UserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'phone' => 'required|string|length:10',
+            'phone' => 'required|string|digits:10',
         ];
     }
 
@@ -47,7 +47,7 @@ class UserRequest extends FormRequest
             'password.min' => 'Password must be at least 8 characters',
             'phone.required' => 'Phone is required',
             'phone.string' => 'Phone must be a string',
-            'phone.length' => 'Phone must be 10 characters',
+            'phone.digits' => 'Phone must be 10 characters',
         ];
     }
 }

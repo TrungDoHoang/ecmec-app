@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_role', function (Blueprint $table) {
-            $table->id();
+            // Khóa chính kết hợp
+            $table->primary(['user_id', 'role_id']);
             $table->unsignedBigInteger('user_id')->comment('User ID');
             $table->unsignedBigInteger('role_id')->comment('Role ID');
             $table->timestamps();

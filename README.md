@@ -64,3 +64,9 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+##Day2
+Thiết lập passport để làm authen nhưng phải comment 
+// \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
+Vấn đề: 
+    + API hết hạn tokken nhưng vẫn sử dụng được. -> resolve: personalAccessTokensExpireIn set time bằng với tokensExpireIn

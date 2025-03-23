@@ -23,10 +23,12 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
-        // Thiết lập thời gian hết hạn cho access token (ví dụ 1 giờ)
-        Passport::tokensExpireIn(now()->addMinutes(30));
 
-        // Thiết lập thời gian hết hạn cho refresh token (ví dụ 30 ngày)
-        Passport::refreshTokensExpireIn(now()->addDays(30));
+        $accessTokenExpireIn = now()->addMinutes(30); // Access token hết hạn sau 1 ph
+        $refreshTokenExpireIn = now()->addHours(1); // Refresh token hết hạn sau 1h
+        // Tùy chọn: Đặt thời gian hết hạn cho tokens
+        Passport::tokensExpireIn($accessTokenExpireIn);
+        Passport::refreshTokensExpireIn($refreshTokenExpireIn);
+        Passport::personalAccessTokensExpireIn($accessTokenExpireIn);
     }
 }

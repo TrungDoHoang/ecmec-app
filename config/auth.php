@@ -40,6 +40,12 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'api' => [
+            'driver' => 'passport', // Sử dụng Passport làm driver
+            'provider' => 'users',
+            'hash' => false,
+        ],
     ],
 
     /*
