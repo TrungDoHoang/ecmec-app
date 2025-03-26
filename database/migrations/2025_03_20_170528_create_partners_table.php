@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('title_vn', 100)->nullable()->comment('Title in Vietnamese');
             $table->string('title_en', 100)->nullable()->comment('Title in English');
             $table->boolean('is_show')->default(true)->nullable()->comment('0: hide, 1: show');
-            $table->boolean('is_delete')->default(false)->nullable()->comment('0: not delete, 1: delete');
             $table->integer('priority')->default(0)->nullable()->comment('0: normal, 1: high');
             $table->unsignedBigInteger('created_by')->nullable()->comment('User ID created');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('User ID updated');
             $table->unsignedBigInteger('img_id')->comment('Image ID');
+            $table->softDeletes(); // add column deleted_at to table
             $table->timestamps();
 
             // Foreign key

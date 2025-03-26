@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('phone', 12)->nullable()->comment('Phone number');
-            $table->boolean('is_delete')->nullable()->default(false)->comment('0: not delete, 1: delete');
             $table->rememberToken();
             $table->timestamps();
         });

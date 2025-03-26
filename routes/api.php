@@ -27,6 +27,7 @@ Route::middleware(['auth:api'])->group(function () {
 
     // Api
     Route::resource('users', UserController::class);
+    Route::put('users/{id}/restore', [UserController::class, 'restore']);
 });
 
 // Not need authentication

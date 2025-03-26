@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'emailVerified' => boolval($this->email_verified_at),
             'phone' => $this->phone,
-            'isDelete' => boolval($this->is_delete),
+            'isDelete' => $this->isDeleted(),
             'createdAt' => $this->created_at->toIso8601String(),
             'updatedAt' => $this->updated_at->toIso8601String(),
             'img' => new ImageResource($this->image),

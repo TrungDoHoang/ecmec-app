@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name_vn', 200)->nullable()->comment('Project type name Vietnamese');
             $table->string('name_en', 200)->nullable()->comment('Project type name English');
-            $table->boolean('is_delete')->nullable()->default(false)->comment('0: not delete, 1: delete');
             $table->unsignedBigInteger('created_by')->nullable()->comment('User ID created');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('User ID updated');
+            $table->softDeletes(); // add column deleted_at to table
             $table->timestamps();
 
             // Foreign key

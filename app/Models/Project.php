@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Project extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'title_vn',
@@ -28,7 +29,6 @@ class Project extends Model
         'start_date',
         'priority',
         'is_show',
-        'is_delete',
         'created_by',
         'updated_by',
         'project_type_id',
@@ -58,5 +58,10 @@ class Project extends Model
     public function services(): BelongsToMany
     {
         return $this->belongsToMany(Service::class, 'project_service', 'project_id', 'service_id');
+    }
+
+    public function isDeleted()
+    {
+        return !is_null($this->deleted_at);
     }
 }

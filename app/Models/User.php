@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -22,7 +23,8 @@ use Laravel\Passport\HasApiTokens;
  */
 class User extends Authenticatable
 {
-    use  HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens;
+    use SoftDeletes; //dòng này để tự động thêm điều kiện delete_at = null
 
     /**
      * The attributes that are mass assignable.
@@ -34,8 +36,7 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        'img_id',
-        'is_delete',
+        'img_id'
     ];
 
     /**
@@ -71,5 +72,10 @@ class User extends Authenticatable
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
+    }
+
+    public function isDeleted(): bool
+    {
+        return !is_null($this->deleted_at);
     }
 }

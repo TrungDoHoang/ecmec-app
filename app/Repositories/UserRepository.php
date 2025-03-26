@@ -7,6 +7,11 @@ use App\Models\User;
 // Repository class nhận dữ liệu từ service, thao tác với db(viết query) và trả về cho service
 class UserRepository
 {
+    public function onlyTrashed()
+    {
+        return User::onlyTrashed()->get();
+    }
+
     public function allUser()
     {
         return User::all();
@@ -15,6 +20,11 @@ class UserRepository
     public function findUser($id)
     {
         return User::find($id);
+    }
+
+    public function findUserDeleted($id)
+    {
+        return User::withTrashed()->where('id', $id)->first();
     }
 
     public function createUser(array $data)

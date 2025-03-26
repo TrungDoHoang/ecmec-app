@@ -19,10 +19,10 @@ return new class extends Migration
             $table->mediumText('content_en')->nullable()->comment('Content English');
             $table->unsignedBigInteger('created_by')->nullable()->comment('User ID created');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('User ID updated');
-            $table->boolean('is_delete')->default(false)->nullable()->comment('0: not delete, 1: delete');
             $table->unsignedBigInteger('img_id')->comment('Image ID');
             $table->integer('priority')->default(0)->nullable()->comment('0: normal, 1: high');
             $table->boolean('is_show')->default(true)->nullable()->comment('0: hide, 1: show');
+            $table->softDeletes(); // add column deleted_at to table
             $table->timestamps();
 
             // Foreign key

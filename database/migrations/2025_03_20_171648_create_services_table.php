@@ -19,9 +19,9 @@ return new class extends Migration
             $table->mediumText('description_en')->nullable()->default('')->comment('Service description English');
             $table->integer('priority')->nullable()->default(0)->comment('0: normal, 1: high');
             $table->boolean('is_show')->nullable()->default(true)->comment('0: hide, 1: show');
-            $table->boolean('is_delete')->nullable()->default(false)->comment('0: not delete, 1: delete');
             $table->unsignedBigInteger('created_by')->nullable()->comment('User ID created');
             $table->unsignedBigInteger('updated_by')->nullable()->comment('User ID updated');
+            $table->softDeletes(); // add column deleted_at to table
             $table->timestamps();
 
             // Foreign key

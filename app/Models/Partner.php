@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Partner extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['title_vn', 'title_en', 'img_id', 'is_show', 'priority', 'is_delete', 'created_by', 'updated_by'];
+    protected $fillable = ['title_vn', 'title_en', 'img_id', 'is_show', 'priority',  'created_by', 'updated_by'];
 
     // Quan hệ với các bảng khác
     public function userCreated()
@@ -25,5 +26,10 @@ class Partner extends Model
     public function images()
     {
         return $this->belongsTo(Image::class, 'img_id');
+    }
+
+    public function isDeleted()
+    {
+        return !is_null($this->deleted_at);
     }
 }

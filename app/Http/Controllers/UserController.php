@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Enums\FolderEnum;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
@@ -19,7 +19,8 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = $this->userService->getAllUser();
+        $folder = request()->folder ?? FolderEnum::DEFAULT;
+        $users = $this->userService->getAllUser($folder);
         return response()->json(UserResource::collection($users), Response::HTTP_OK);
     }
 
@@ -55,5 +56,17 @@ class UserController extends Controller
         }
 
         return response()->json(['message' => 'User deleted'], Response::HTTP_OK);
+    }
+
+    public function restore($id)
+    {
+        echo $id;
+        $user = $this->userService->restoreUser($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        return response()->json(new UserResource($user), Response::HTTP_OK);
     }
 }

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RecruimentPost extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'title_vn',
@@ -19,7 +20,6 @@ class RecruimentPost extends Model
         'salary',
         'is_show',
         'priority',
-        'is_delete',
         'created_by',
         'updated_by',
     ];
@@ -33,5 +33,10 @@ class RecruimentPost extends Model
     public function userUpdated()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function isDeleted()
+    {
+        return !is_null($this->deleted_at);
     }
 }

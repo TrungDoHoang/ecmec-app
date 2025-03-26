@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\AuthServiceInterface;
 use App\Enums\UserEnum;
 use App\Repositories\UserRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\Passport;
@@ -29,8 +30,14 @@ class AuthService implements AuthServiceInterface
             $user = Auth::user();
             $user->makeHidden(['email_verified_at', 'password',]);
             $accessToken = $user->createToken('auth_token')->accessToken;
+            $expiresAt = now()->add(Passport::tokensExpireIn());
+            $formattedDate = $expiresAt->format('Y-m-d H:i:s');
 
-            return ['user' => $user, 'access_token' => $accessToken, 'expiresIn' => Passport::tokensExpireIn()];
+            return [
+                'user' => $user,
+                'access_token' => $accessToken,
+                'expiresIn' => $formattedDate
+            ];
         }
     }
 

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\UserServiceInterface;
+use App\Enums\FolderEnum;
 use App\Repositories\UserRepository;
 
 // Service class nhận dữ liệu từ controller, vieets các logic cần thiết và thao tác với repository và trả về cho controller
@@ -16,8 +17,11 @@ class UserService implements UserServiceInterface
         $this->userRepo = $userRepository;
     }
 
-    public function getAllUser()
+    public function getAllUser($folder)
     {
+        if ($folder == FolderEnum::DELETED) {
+            return $this->userRepo->onlyTrashed();
+        }
         return $this->userRepo->allUser();
     }
 
@@ -40,5 +44,16 @@ class UserService implements UserServiceInterface
 
         $user->delete();
         return true;
+    }
+
+    public function restoreUser($id)
+    {
+        $user = $this->userRepo->findUserDeleted($id);
+        if (!$user) {
+            return false;
+        }
+
+        $user->restore();
+        return $user;
     }
 }
