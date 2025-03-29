@@ -23,7 +23,6 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('logout-all-devices', [AuthController::class, 'logoutAllDevices'])->name('logout.all');
     Route::get('me', [AuthController::class, 'me'])->name('me');
-    Route::post('refresh-token', [AuthController::class, 'refreshToken'])->name('refresh.token');
 
     // Api
     Route::resource('users', UserController::class);
@@ -33,3 +32,4 @@ Route::middleware(['auth:api'])->group(function () {
 // Not need authentication
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
+Route::post('refresh-token', [AuthController::class, 'refreshToken'])->name('refresh.token');

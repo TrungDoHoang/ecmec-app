@@ -8,6 +8,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Services\AuthService;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class AuthController extends Controller
@@ -39,10 +40,23 @@ class AuthController extends Controller
     }
 
     // Refresh token
-    public function refreshToken()
+    public function refreshToken(Request $request)
     {
-        $newToken = $this->authService->refreshToken();
-        return response()->json(['access_token' => $newToken], Response::HTTP_OK);
+        // Kiểm tra xem refresh token có hợp lệ không
+        if (!$request->has('refreshToken') || empty($request->input('refreshToken'))) {
+            // Nếu không có refresh token, trả về lỗi
+            return response()->json(['message' => 'Refresh token is required'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Kiểm tra xem refresh token có hợp lệ không
+        $refreshToken = $request->input('refreshToken');
+
+        // refreshToken return new token or null
+        $data = $this->authService->refreshToken($refreshToken);
+        if (!$data) {
+            return response()->json(['message' => 'Invalid refresh token'], Response::HTTP_UNAUTHORIZED);
+        }
+        return response()->json($data, Response::HTTP_OK);
     }
 
     // Đăng xuất

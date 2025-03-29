@@ -8,6 +8,7 @@ use App\Repositories\UserRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Laravel\Passport\Passport;
 
 class AuthService implements AuthServiceInterface
@@ -29,14 +30,31 @@ class AuthService implements AuthServiceInterface
         if (Auth::attempt($data)) {
             $user = Auth::user();
             $user->makeHidden(['email_verified_at', 'password',]);
-            $accessToken = $user->createToken('auth_token')->accessToken;
-            $expiresAt = now()->add(Passport::tokensExpireIn());
-            $formattedDate = $expiresAt->format('Y-m-d H:i:s');
+
+            /**
+             * Call API to get access token by password grant. Response is JSON 
+             * {
+             * "token_type": "Bearer",
+             * "expires_in: 60",
+             * "access_token": "xyz",
+             * "refresh_token": "xyz"
+             * } 
+             * */
+            $resAuth = Http::asForm()->post(env('APP_AUTH_URL') . '/oauth/token', [
+                'grant_type' => 'password',
+                // // tên_file.key
+                'client_id' => config('auth.passport.password_grant_client.id'),
+                'client_secret' => config('auth.passport.password_grant_client.secret'),
+                'username' => $data['email'],
+                'password' => $data['password'],
+                'scope' => ''
+            ]);
 
             return [
                 'user' => $user,
-                'access_token' => $accessToken,
-                'expiresIn' => $formattedDate
+                'accessToken' => $resAuth['access_token'],
+                'refreshToken' => $resAuth['refresh_token'],
+                'expiresIn' => $resAuth['expires_in'],
             ];
         }
     }
@@ -71,12 +89,23 @@ class AuthService implements AuthServiceInterface
         return 'Logout all devices successfully';
     }
 
-    public function refreshToken()
+    public function refreshToken($refreshToken)
     {
-        $user = Auth::user();
-        $user->tokens()->where('id', $user->token()->id)->delete();
-        $newToken = $user->createToken('auth_token')->accessToken;
-        return $newToken;
+        $newToken = Http::asForm()->post(env('APP_AUTH_URL') . '/oauth/token', [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $refreshToken,
+            'client_id' => config('auth.passport.password_grant_client.id'),
+            'client_secret' => config('auth.passport.password_grant_client.secret'),
+            'scope' => ''
+        ]);
+
+        if (!isset($newToken['error'])) {
+            return [
+                'accessAoken' => $newToken['access_token'],
+                'refreshToken' => $newToken['refresh_token'],
+                'expiresIn' => $newToken['expires_in'],
+            ];
+        }
     }
 
     public function me()

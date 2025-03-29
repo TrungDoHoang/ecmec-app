@@ -77,6 +77,7 @@ Vấn đề:
     + Sửa lại time-zone theo giờ VN (.env + config/app.php) -> DONE
 
 ## Day 4:
-    + Refresh token.
-    + Xác thực với email.
+    + Refresh token -> DONE. Tuy nhiên sẽ phải chạy 2 port riêng(8000 và 8001) vì Laravel chạy single-threaded trong development server.
     + Phân trang
+    + Xác thực với email.
+    + Phân quyền api.

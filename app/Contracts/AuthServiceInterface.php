@@ -12,7 +12,7 @@ interface AuthServiceInterface
 
     public function logoutAllDevice();
 
-    public function refreshToken();
+    public function refreshToken(string $refreshToken);
 
     public function me();
 }
