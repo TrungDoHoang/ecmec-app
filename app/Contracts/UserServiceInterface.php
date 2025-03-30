@@ -4,7 +4,7 @@ namespace App\Contracts;
 
 interface UserServiceInterface
 {
-    public function getAllUser($folder);
+    public function getAllUser(string $folder, int $perPage, int $page);
 
     public function findUser($id);
 

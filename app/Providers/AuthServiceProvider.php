@@ -24,8 +24,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        $accessTokenExpireIn = now()->addMinutes(30); // Access token hết hạn sau 1 ph
-        $refreshTokenExpireIn = now()->addHours(1); // Refresh token hết hạn sau 1h
+        $accessTokenExpireIn = now()->addDays(30); // Access token hết hạn sau 1 ph
+        $refreshTokenExpireIn = now()->addMonths(6); // Refresh token hết hạn sau 1h
         // Tùy chọn: Đặt thời gian hết hạn cho tokens
         Passport::tokensExpireIn($accessTokenExpireIn);
         Passport::refreshTokensExpireIn($refreshTokenExpireIn);

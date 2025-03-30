@@ -7,14 +7,14 @@ use App\Models\User;
 // Repository class nhận dữ liệu từ service, thao tác với db(viết query) và trả về cho service
 class UserRepository
 {
-    public function onlyTrashed()
+    public function onlyTrashed(int $perPage, int $page)
     {
-        return User::onlyTrashed()->get();
+        return User::onlyTrashed()->paginate($perPage, ['*'], 'page', $page);
     }
 
-    public function allUser()
+    public function allUser(int $perPage, int $page)
     {
-        return User::all();
+        return User::query()->paginate($perPage, ['*'], 'page', $page);
     }
 
     public function findUser($id)

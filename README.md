@@ -1,83 +1,19 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
 ## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
 ## Day2
-Thiết lập passport để làm authen nhưng phải comment 
-// \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
-Vấn đề: 
-    + API hết hạn tokken nhưng vẫn sử dụng được. -> resolve: personalAccessTokensExpireIn set time bằng với tokensExpireIn
+- Thiết lập passport để làm authen nhưng phải comment `\Laravel\Passport\Http\Middleware\CreateFreshApiToken::class`,
+- Vấn đề: 
+> API hết hạn tokken nhưng vẫn sử dụng được. -> resolve: personalAccessTokensExpireIn set time bằng với tokensExpireIn
 
 ## Day 3:
-    + Sửa lại primary bảng trung gian. -> DONE
-    + Dùng hàm ->sortDelete của laravel thay cho cột is_delete. -> DONE
-    + Sửa lại time-zone theo giờ VN (.env + config/app.php) -> DONE
+- Sửa lại primary bảng trung gian. -> DONE
+- Dùng hàm ->sortDelete của laravel thay cho cột is_delete. -> DONE
+- Sửa lại time-zone theo giờ VN (.env + config/app.php) -> DONE
 
 ## Day 4:
-    + Refresh token -> DONE. Tuy nhiên sẽ phải chạy 2 port riêng(8000 và 8001) vì Laravel chạy single-threaded trong development server.
-    + Phân trang
-    + Xác thực với email.
-    + Phân quyền api.
+- Refresh token -> DONE. Tuy nhiên sẽ phải chạy 2 port riêng(8000 và 8001) vì Laravel chạy single-threaded trong development server.
+
+## Day 5:
+- Phân trang -> DONE. Dùng Traits để có thể tái sử dụng. Tại controller cần sử dụng dùng: `use TraitName`.
+- Xác thực với email.
+- Phân quyền api.

@@ -6,10 +6,12 @@ use App\Enums\FolderEnum;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
+use App\Traits\HasPaginatedResponse;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
+    use HasPaginatedResponse;
     protected $userService;
 
     public function __construct(UserService $userService)
@@ -19,9 +21,11 @@ class UserController extends Controller
 
     public function index()
     {
-        $folder = request()->folder ?? FolderEnum::DEFAULT;
-        $users = $this->userService->getAllUser($folder);
-        return response()->json(UserResource::collection($users), Response::HTTP_OK);
+        $perPage = request()->input('per_page', 15); // Mặc định 15 items
+        $page = request()->input('page', 1);
+        $folder = request()->input('folder', FolderEnum::DEFAULT);
+        $users = $this->userService->getAllUser($folder, $perPage, $page);
+        return response()->json($this->paginatedResponse($users, UserResource::collection($users)));;
     }
 
     public function show($id)

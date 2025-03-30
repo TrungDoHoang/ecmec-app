@@ -17,12 +17,12 @@ class UserService implements UserServiceInterface
         $this->userRepo = $userRepository;
     }
 
-    public function getAllUser($folder)
+    public function getAllUser($folder, $perPage, $page)
     {
         if ($folder == FolderEnum::DELETED) {
-            return $this->userRepo->onlyTrashed();
+            return $this->userRepo->onlyTrashed($perPage, $page);
         }
-        return $this->userRepo->allUser();
+        return $this->userRepo->allUser($perPage, $page);
     }
 
     public function findUser($id)
