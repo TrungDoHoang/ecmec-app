@@ -15,5 +15,10 @@
 
 ## Day 5:
 - Phân trang -> DONE. Dùng Traits để có thể tái sử dụng. Tại controller cần sử dụng dùng: `use TraitName`.
+
+## Day 6:
+- Viết command customize (make:trait, make:interface, make:enum, make:helper ) kèm stub.
+
+## Next:
 - Xác thực với email.
 - Phân quyền api.

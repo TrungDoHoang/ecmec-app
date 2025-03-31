@@ -1,0 +1,7 @@
+<?php
+
+namespace App\Helpers;
+
+function do_something() {
+    // Logic here
+}
