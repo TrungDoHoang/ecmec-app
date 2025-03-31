@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 // Repository class nhận dữ liệu từ service, thao tác với db(viết query) và trả về cho service
 class UserRepository
@@ -29,7 +31,20 @@ class UserRepository
 
     public function createUser(array $data)
     {
-        return User::create($data);
+        // Bắt đầu một transaction, mọi thay đổi database sau đó sẽ tạm thời và chưa được lưu.
+        DB::beginTransaction();
+        try {
+            $user = User::create($data);
+            $user->roles()->attach($data['role']);
+
+            // Nếu mọi thứ thành công, commit transaction
+            DB::commit();
+            return $user;
+        } catch (\Exception $e) {
+            //  Nếu có lỗi, rollback tất cả thay đổi
+            DB::rollBack();
+            Log::error($e);
+        }
     }
 
     public function updateUser($id, array $data)

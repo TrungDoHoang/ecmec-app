@@ -43,13 +43,12 @@ class AuthController extends Controller
     public function refreshToken(Request $request)
     {
         // Kiểm tra xem refresh token có hợp lệ không
-        if (!$request->has('refreshToken') || empty($request->input('refreshToken'))) {
-            // Nếu không có refresh token, trả về lỗi
-            return response()->json(['message' => 'Refresh token is required'], Response::HTTP_BAD_REQUEST);
-        }
+        $validated = $request->validate([
+            'refreshToken' => 'required|string',
+        ]);
 
         // Kiểm tra xem refresh token có hợp lệ không
-        $refreshToken = $request->input('refreshToken');
+        $refreshToken = $validated['refreshToken'];
 
         // refreshToken return new token or null
         $data = $this->authService->refreshToken($refreshToken);
@@ -77,7 +76,13 @@ class AuthController extends Controller
     {
         $userData = $request->validated();
         $user = $this->authService->register($userData);
-        return response()->json($user, Response::HTTP_CREATED);
+        if ($user) {
+            return response()->json(new UserResource($user), Response::HTTP_CREATED);
+        } else {
+            return response()->json([
+                'message' => 'Failed to create user or assign role.',
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function changePassword(ChangePasswordRequest $request, $id)

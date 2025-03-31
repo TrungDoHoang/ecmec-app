@@ -27,6 +27,7 @@ class UserRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
             'phone' => 'required|string|digits:10',
+            'role' => 'required|integer|exists:roles,id',
         ];
     }
 
@@ -48,6 +49,9 @@ class UserRequest extends FormRequest
             'phone.required' => 'Phone is required',
             'phone.string' => 'Phone must be a string',
             'phone.digits' => 'Phone must be 10 characters',
+            'role.required' => 'Role is required',
+            'role.integer' => 'Role must be a number',
+            'role.exists' => 'Role invalid'
         ];
     }
 }

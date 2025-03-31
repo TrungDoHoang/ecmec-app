@@ -4,12 +4,11 @@ namespace App\Services;
 
 use App\Contracts\AuthServiceInterface;
 use App\Enums\UserEnum;
+use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
-use Laravel\Passport\Passport;
 
 class AuthService implements AuthServiceInterface
 {
@@ -29,7 +28,6 @@ class AuthService implements AuthServiceInterface
     {
         if (Auth::attempt($data)) {
             $user = Auth::user();
-            $user->makeHidden(['email_verified_at', 'password',]);
 
             /**
              * Call API to get access token by password grant. Response is JSON 
@@ -51,7 +49,7 @@ class AuthService implements AuthServiceInterface
             ]);
 
             return [
-                'user' => $user,
+                'user' => new UserResource($user),
                 'accessToken' => $resAuth['access_token'],
                 'refreshToken' => $resAuth['refresh_token'],
                 'expiresIn' => $resAuth['expires_in'],
