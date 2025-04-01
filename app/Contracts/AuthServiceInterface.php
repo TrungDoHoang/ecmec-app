@@ -15,4 +15,8 @@ interface AuthServiceInterface
     public function refreshToken(string $refreshToken);
 
     public function me();
+
+    public function verifyTokenRegister(string $token);
+
+    public function resendMailRegister(string $email);
 }

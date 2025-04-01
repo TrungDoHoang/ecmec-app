@@ -19,9 +19,9 @@ class UserRepository
         return User::query()->paginate($perPage, ['*'], 'page', $page);
     }
 
-    public function findUser($id)
+    public function findUser($value, $collumn = 'id')
     {
-        return User::find($id);
+        return User::where($collumn, $value)->first();
     }
 
     public function findUserDeleted($id)

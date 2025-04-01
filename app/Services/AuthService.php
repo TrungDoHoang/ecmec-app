@@ -5,10 +5,14 @@ namespace App\Services;
 use App\Contracts\AuthServiceInterface;
 use App\Enums\UserEnum;
 use App\Http\Resources\UserResource;
+use App\Mail\VerifyEmailMail;
 use App\Repositories\UserRepository;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthService implements AuthServiceInterface
 {
@@ -18,10 +22,23 @@ class AuthService implements AuthServiceInterface
     {
         $this->userRepo = $userRepository;
     }
+
     public function register(array $data)
     {
         $data['password'] = bcrypt($data['password']);
-        return $this->userRepo->createUser($data);
+        $data['email_verify_token'] = Str::random(60);
+        $data['email_verify_token_expires'] = now()->addDays(7);
+
+        $user = $this->userRepo->createUser($data);
+
+        // Gửi email verify
+        if ($user) {
+            // $verifyUrl = env('FRONTEND_URL') . '/verify-email?token=' . $data['email_verify_token'];
+            // Mail::to($user->email)->send(new VerifyEmailMail($verifyUrl));
+            sendVerifyRegisterEmail($user->email_verify_token, $user->email);
+        }
+
+        return $user;
     }
 
     public function authenticate(array $data)
@@ -110,5 +127,50 @@ class AuthService implements AuthServiceInterface
     {
         $currentUser = Auth::user();
         return $currentUser;
+    }
+
+    public function verifyTokenRegister(string $token)
+    {
+        $user = $this->userRepo->findUser($token, 'email_verify_token');
+
+        $user->update([
+            'email_verified_at' => now(),
+            'email_verify_token' => null, // Token chỉ dùng 1 lần
+            'email_verify_token_expires' => null
+        ]);
+
+        return $user;
+    }
+
+    public function resendMailRegister(string $email)
+    {
+        $user = $this->userRepo->findUser($email, 'email');
+
+        if (!$user) {
+            return [
+                'message' => 'User not found',
+                'code' => Response::HTTP_NOT_FOUND
+            ];
+        }
+
+        if ($user->email_verified_at) {
+            return [
+                'message' => 'Email already verified',
+                'code' => Response::HTTP_BAD_REQUEST
+            ];
+        }
+
+        // Tạo token mới
+        $user->update([
+            'email_verify_token' => Str::random(60)
+        ]);
+
+        // Gửi lại email
+        sendVerifyRegisterEmail($user->email_verify_token, $user->email);
+
+        return [
+            'message' => 'Verification email resent',
+            'code' => Response::HTTP_OK
+        ];
     }
 }

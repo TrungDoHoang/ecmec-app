@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +28,14 @@ Route::middleware(['auth:api'])->group(function () {
 });
 
 // Not need authentication
-Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
-Route::post('refresh-token', [AuthController::class, 'refreshToken'])->name('refresh.token');
+Route::group([], function () {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('refresh-token', [AuthController::class, 'refreshToken'])->name('refresh.token');
+
+    // Verify email
+    Route::post('/verify-email', [AuthController::class, 'verifyEmailRegister']);
+
+    // Gửi lại email verify
+    Route::post('/resend-verification', [AuthController::class, 'resendEmailRegister']);
+});

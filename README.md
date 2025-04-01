@@ -19,6 +19,9 @@
 ## Day 6:
 - Viết command customize (make:trait, make:interface, make:enum, make:helper ) kèm stub.
 
+## Day 7:
+- Xác thực với email(verify, resend mail). DONE
+> **_NOTE:_**  Helper file không được chứa namespace và phải if(!function_exists) để chắc chắn nó chưa tồn tại hàm.
 ## Next:
-- Xác thực với email.
+- Chức năng quên mật khẩu
 - Phân quyền api.

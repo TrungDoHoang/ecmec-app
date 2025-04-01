@@ -1,7 +1,7 @@
 <?php
 
-namespace App\Helpers;
-
-function do_something() {
-    // Logic here
+if(!function_exists('do_something')) {
+    function do_something() {
+        // Logic here
+    }
 }

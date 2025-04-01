@@ -100,4 +100,29 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Password changed successfully'], Response::HTTP_OK);
     }
+
+    public function verifyEmailRegister(Request $request)
+    {
+        $request->validate(['token' => 'required|string']);
+
+        $user = $this->authService->verifyTokenRegister($request->token);
+
+        if (!$user) {
+            return response()->json([
+                'error' => 'Invalid token',
+                'resend_url' => '/api/resend-verification' // FE sẽ gọi nếu cần
+            ], 400);
+        }
+
+        return response()->json(['message' => 'Email verified successfully']);
+    }
+
+    public function resendEmailRegister(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $result = $this->authService->resendMailRegister($request->email);
+
+        return response()->json(['message' => $result['message']], $result['code']);
+    }
 }
