@@ -30,8 +30,14 @@ class UserService implements UserServiceInterface
         return $this->userRepo->findUser($id);
     }
 
-    public function updateUser($id, array $data)
+    public function updateUser($id, $data)
     {
+        $data = $data->only([
+            'name',
+            'email',
+            'phone',
+            'img_id'
+        ]);
         return $this->userRepo->updateUser($id, $data);
     }
 

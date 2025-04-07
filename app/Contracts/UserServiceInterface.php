@@ -8,7 +8,7 @@ interface UserServiceInterface
 
     public function findUser($id);
 
-    public function updateUser($id, array $data);
+    public function updateUser($id, $data);
 
     public function deleteUser($id);
 
