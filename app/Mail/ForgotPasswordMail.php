@@ -9,18 +9,17 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class VerifyEmailMail extends Mailable
+class ForgotPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected  $url;
+    protected $url;
 
     /**
      * Create a new message instance.
      */
     public function __construct(string $url)
     {
-        //
         $this->url = $url;
     }
 
@@ -30,7 +29,7 @@ class VerifyEmailMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Verify Your Email',
+            subject: 'Forgot Password Mail',
         );
     }
 
@@ -40,9 +39,9 @@ class VerifyEmailMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'email.email',
+            view: 'email.emailForgot',
             with: [
-                'url' => $this->url,
+                'url' => $this->url
             ]
         );
     }

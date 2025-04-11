@@ -19,4 +19,8 @@ interface AuthServiceInterface
     public function verifyTokenRegister(string $token);
 
     public function resendMailRegister(string $email);
+
+    public function sendMailFgPassword(string $email);
+
+    public function verifyFogotPassword(string $token, string $password);
 }

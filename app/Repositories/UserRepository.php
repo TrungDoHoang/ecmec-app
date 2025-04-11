@@ -19,7 +19,7 @@ class UserRepository
         return User::query()->paginate($perPage, ['*'], 'page', $page);
     }
 
-    public function findUser($value, $collumn = 'id')
+    public function findUser($value, $collumn = 'id'): User|null
     {
         return User::where($collumn, $value)->first();
     }

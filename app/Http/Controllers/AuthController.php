@@ -125,4 +125,22 @@ class AuthController extends Controller
 
         return response()->json(['message' => $result['message']], $result['code']);
     }
+
+    public function sendMailFgPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $result = $this->authService->sendMailFgPassword($request->email);
+
+        return response()->json(['message' => $result['message']], $result['code']);
+    }
+
+    public function verifyFogotPassword(Request $request)
+    {
+        $request->validate(['token' => 'required|string', 'password' => 'required|string|min:8']);
+
+        $result = $this->authService->verifyFogotPassword($request->token, $request->password);
+
+        return response()->json(['message' => $result['message']], $result['code']);
+    }
 }

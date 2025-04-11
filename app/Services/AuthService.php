@@ -133,6 +133,15 @@ class AuthService implements AuthServiceInterface
     {
         $user = $this->userRepo->findUser($token, 'email_verify_token');
 
+        if (!$user) {
+            return null;
+        }
+
+        // Check if token has expired
+        if ($user->email_verify_token_expires && $user->email_verify_token_expires < now()) {
+            return null;
+        }
+
         $user->update([
             'email_verified_at' => now(),
             'email_verify_token' => null, // Token chỉ dùng 1 lần
@@ -160,6 +169,13 @@ class AuthService implements AuthServiceInterface
             ];
         }
 
+        if ($user->email_verify_token_expires && $user->email_verify_token_expires > now()) {
+            return [
+                'message' => 'The token sent is still valid, please check your email again.',
+                'code' => Response::HTTP_BAD_REQUEST
+            ];
+        }
+
         // Tạo token mới
         $user->update([
             'email_verify_token' => Str::random(60)
@@ -170,6 +186,75 @@ class AuthService implements AuthServiceInterface
 
         return [
             'message' => 'Verification email resent',
+            'code' => Response::HTTP_OK
+        ];
+    }
+
+    public function sendMailFgPassword(string $email)
+    {
+        $user = $this->userRepo->findUser($email, 'email');
+
+        if (!$user) {
+            return [
+                'message' => 'User not found',
+                'code' => Response::HTTP_NOT_FOUND
+            ];
+        }
+
+        if (!$user->email_verified_at) {
+            return [
+                'message' => 'Email not verified',
+                'code' => Response::HTTP_BAD_REQUEST
+            ];
+        }
+
+        if ($user->email_verify_token_expires && $user->email_verify_token_expires > now()) {
+            return [
+                'message' => 'The token sent is still valid, please check your email again.',
+                'code' => Response::HTTP_BAD_REQUEST
+            ];
+        }
+
+        $token = Str::random(60);
+        $user->update([
+            'email_verify_token' => $token,
+            'email_verify_token_expires' => now()->addHours(12)
+        ]);
+
+        sendForgotPasswordEmail($token, $user->email);
+
+        return [
+            'message' => 'The reset password email has been sent to your email.',
+            'code' => Response::HTTP_OK
+        ];
+    }
+
+    public function verifyFogotPassword($token, $password)
+    {
+        $user = $this->userRepo->findUser($token, 'email_verify_token');
+
+        if (!$user) {
+            return [
+                'message' => 'The token sent is invalid, please check your email again.',
+                'code' => Response::HTTP_BAD_REQUEST
+            ];
+        }
+
+        if ($user->email_verify_token_expires && $user->email_verify_token_expires < now()) {
+            return [
+                'message' => 'The token sent is expired, please check your email again.',
+                'code' => Response::HTTP_BAD_REQUEST
+            ];
+        }
+
+        $user->update([
+            'password' => bcrypt($password),
+            'email_verify_token' => null,
+            'email_verify_token_expires' => null
+        ]);
+
+        return [
+            'message' => 'Password reset successfully',
             'code' => Response::HTTP_OK
         ];
     }

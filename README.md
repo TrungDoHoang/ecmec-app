@@ -24,4 +24,5 @@
 > **_NOTE:_**  Helper file không được chứa namespace và phải if(!function_exists) để chắc chắn nó chưa tồn tại hàm.
 ## Next:
 - Chức năng quên mật khẩu
+## Day 8:
 - Phân quyền api.

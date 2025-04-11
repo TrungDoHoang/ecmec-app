@@ -38,4 +38,10 @@ Route::group([], function () {
 
     // Gửi lại email verify
     Route::post('/resend-verification', [AuthController::class, 'resendEmailRegister']);
+
+    // Gửi email Fogot Password
+    Route::post('forgot-password', [AuthController::class, 'sendMailFgPassword']);
+
+    // Verify email Fogot Password
+    Route::post('reset-password', [AuthController::class, 'verifyFogotPassword']);
 });
