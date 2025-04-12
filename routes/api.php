@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserEnum;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -22,9 +23,12 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('logout-all-devices', [AuthController::class, 'logoutAllDevices'])->name('logout.all');
     Route::get('me', [AuthController::class, 'me'])->name('me');
 
+
     // Api
-    Route::resource('users', UserController::class);
-    Route::put('users/{id}/restore', [UserController::class, 'restore']);
+    Route::middleware(['role:' . join(",", array(UserEnum::ROLE_ADMIN))])->group(function () {
+        Route::put('users/{id}/restore', [UserController::class, 'restore']);
+        Route::resource('users', UserController::class);
+    });
 });
 
 // Not need authentication

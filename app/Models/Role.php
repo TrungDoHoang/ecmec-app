@@ -15,7 +15,7 @@ class Role extends Model
     /**
      * Foreign key constraints to User
      */
-    public function roles(): BelongsToMany
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_role', 'role_id', 'user_id');
     }

@@ -24,6 +24,14 @@ class UserResource extends JsonResource
             'createdAt' => $this->created_at->toIso8601String(),
             'updatedAt' => $this->updated_at->toIso8601String(),
             'img' => new ImageResource($this->image),
+            'roles' => $this->roles->map(function ($role) {
+                return [
+                    'id' => $role->id,
+                    'roleName' => $role->role_name,
+                    'createdAt' => $role->created_at->toIso8601String(),
+                    'updatedAt' => $role->updated_at->toIso8601String(),
+                ];
+            }),
         ];
     }
 }
